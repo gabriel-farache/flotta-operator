@@ -7,8 +7,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      actions: write
     steps:
     - uses: ouzi-dev/commit-status-updater@v1.1.0
       with:
