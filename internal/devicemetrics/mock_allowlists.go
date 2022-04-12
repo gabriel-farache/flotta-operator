@@ -6,36 +6,35 @@ package devicemetrics
 
 import (
 	context "context"
-	reflect "reflect"
-
 	gomock "github.com/golang/mock/gomock"
 	models "github.com/project-flotta/flotta-operator/models"
+	reflect "reflect"
 )
 
-// MockAllowListGenerator is a mock of AllowListGenerator interface.
+// MockAllowListGenerator is a mock of AllowListGenerator interface
 type MockAllowListGenerator struct {
 	ctrl     *gomock.Controller
 	recorder *MockAllowListGeneratorMockRecorder
 }
 
-// MockAllowListGeneratorMockRecorder is the mock recorder for MockAllowListGenerator.
+// MockAllowListGeneratorMockRecorder is the mock recorder for MockAllowListGenerator
 type MockAllowListGeneratorMockRecorder struct {
 	mock *MockAllowListGenerator
 }
 
-// NewMockAllowListGenerator creates a new mock instance.
+// NewMockAllowListGenerator creates a new mock instance
 func NewMockAllowListGenerator(ctrl *gomock.Controller) *MockAllowListGenerator {
 	mock := &MockAllowListGenerator{ctrl: ctrl}
 	mock.recorder = &MockAllowListGeneratorMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockAllowListGenerator) EXPECT() *MockAllowListGeneratorMockRecorder {
 	return m.recorder
 }
 
-// GenerateFromConfigMap mocks base method.
+// GenerateFromConfigMap mocks base method
 func (m *MockAllowListGenerator) GenerateFromConfigMap(arg0 context.Context, arg1, arg2 string) (*models.MetricsAllowList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GenerateFromConfigMap", arg0, arg1, arg2)
@@ -44,7 +43,7 @@ func (m *MockAllowListGenerator) GenerateFromConfigMap(arg0 context.Context, arg
 	return ret0, ret1
 }
 
-// GenerateFromConfigMap indicates an expected call of GenerateFromConfigMap.
+// GenerateFromConfigMap indicates an expected call of GenerateFromConfigMap
 func (mr *MockAllowListGeneratorMockRecorder) GenerateFromConfigMap(arg0, arg1, arg2 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenerateFromConfigMap", reflect.TypeOf((*MockAllowListGenerator)(nil).GenerateFromConfigMap), arg0, arg1, arg2)

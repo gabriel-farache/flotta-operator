@@ -6,37 +6,36 @@ package k8sclient
 
 import (
 	context "context"
-	reflect "reflect"
-
 	gomock "github.com/golang/mock/gomock"
 	types "k8s.io/apimachinery/pkg/types"
+	reflect "reflect"
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// MockK8sClient is a mock of K8sClient interface.
+// MockK8sClient is a mock of K8sClient interface
 type MockK8sClient struct {
 	ctrl     *gomock.Controller
 	recorder *MockK8sClientMockRecorder
 }
 
-// MockK8sClientMockRecorder is the mock recorder for MockK8sClient.
+// MockK8sClientMockRecorder is the mock recorder for MockK8sClient
 type MockK8sClientMockRecorder struct {
 	mock *MockK8sClient
 }
 
-// NewMockK8sClient creates a new mock instance.
+// NewMockK8sClient creates a new mock instance
 func NewMockK8sClient(ctrl *gomock.Controller) *MockK8sClient {
 	mock := &MockK8sClient{ctrl: ctrl}
 	mock.recorder = &MockK8sClientMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockK8sClient) EXPECT() *MockK8sClientMockRecorder {
 	return m.recorder
 }
 
-// Get mocks base method.
+// Get mocks base method
 func (m *MockK8sClient) Get(arg0 context.Context, arg1 types.NamespacedName, arg2 client.Object) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Get", arg0, arg1, arg2)
@@ -44,7 +43,7 @@ func (m *MockK8sClient) Get(arg0 context.Context, arg1 types.NamespacedName, arg
 	return ret0
 }
 
-// Get indicates an expected call of Get.
+// Get indicates an expected call of Get
 func (mr *MockK8sClientMockRecorder) Get(arg0, arg1, arg2 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockK8sClient)(nil).Get), arg0, arg1, arg2)

@@ -64,10 +64,10 @@ manifests: controller-gen ## Generate WebhookConfiguration, ClusterRole and Cust
 
 generate-tools:
 ifeq (, $(shell which mockery))
-	(cd /tmp && go get github.com/vektra/mockery/.../@v1.1.2)
+	(cd /tmp && go install github.com/vektra/mockery/.../@v1.1.2)
 endif
 ifeq (, $(shell which mockgen))
-	(cd /tmp/ && go get github.com/golang/mock/mockgen@v1.6.0)
+	(cd /tmp/ && go install github.com/golang/mock/mockgen@v1.6.0)
 endif
 	@exit
 
@@ -79,10 +79,10 @@ generate-%:
 	./hack/generate.sh generate_$(subst -,_,$*)
 
 fmt: ## Run go fmt against code.
-	go fmt ./...
+	gofmt .
 
 vet: ## Run go vet against code.
-	go vet ./...
+	go vet .
 
 gosec: ## Run gosec locally
 	$(DOCKER) run --rm -it -v $(PWD):/opt/data/:z docker.io/securego/gosec -exclude-generated /opt/data/...
@@ -212,7 +212,7 @@ TMP_DIR=$$(mktemp -d) ;\
 cd $$TMP_DIR ;\
 go mod init tmp ;\
 echo "Downloading $(2)" ;\
-GOBIN=$(PROJECT_DIR)/bin go get $(2) ;\
+GOBIN=$(PROJECT_DIR)/bin go install $(2) ;\
 rm -rf $$TMP_DIR ;\
 }
 endef
