@@ -9,9 +9,10 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/wait"
-	"k8s.io/apimachinery/pkg/watch"
+	apiWatch "k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/kubernetes"
-	"k8s.io/client-go/util/retry"
+	"k8s.io/client-go/tools/cache"
+	clientWatch "k8s.io/client-go/tools/watch"
 )
 
 var (
@@ -28,26 +29,35 @@ var (
 func WatchForChanges(clientset kubernetes.Interface, namespace string, configMapName string, dataField string, dataValue string, setupLogger logr.Logger) {
 	logger = setupLogger
 	logger.V(1).Info("watch for changes", "namespace", namespace, "configMap name", configMapName, "data field", dataField, "current value", dataValue)
-	for {
-		var watcher watch.Interface
-		err := createWatcher(clientset, namespace, configMapName, &watcher)
-		if err != nil {
-			logger.Error(err, "cannot create watcher", "namespace", namespace, "configMap name", configMapName)
-			os.Exit(1)
-		}
+	retryWatcher, err := createWatcher(clientset, namespace, configMapName)
 
-		checkConfigMapChanges(watcher.ResultChan(), dataField, dataValue)
+	if err != nil {
+		logger.Error(err, "cannot create watcher", "namespace", namespace, "configMap name", configMapName)
+		os.Exit(1)
+	}
+	for {
+		checkConfigMapChanges(retryWatcher.ResultChan(), dataField, dataValue)
 	}
 }
 
-func checkConfigMapChanges(eventChannel <-chan watch.Event, dataField string, dataValue string) {
+func createWatcher(clientset kubernetes.Interface, namespace string, configMapName string) (*clientWatch.RetryWatcher, error) {
+	watchConfigMapFunc := func(options metav1.ListOptions) (apiWatch.Interface, error) {
+		return clientset.CoreV1().ConfigMaps(namespace).Watch(context.TODO(),
+			metav1.SingleObject(metav1.ObjectMeta{Name: configMapName, Namespace: namespace}))
+	}
+	logger.Info("Starting watcher", "namespace", namespace, "configMap name", configMapName)
+
+	return clientWatch.NewRetryWatcher("1", &cache.ListWatch{WatchFunc: watchConfigMapFunc})
+}
+
+func checkConfigMapChanges(eventChannel <-chan apiWatch.Event, dataField string, dataValue string) {
 	for {
 		event, open := <-eventChannel
 		if open {
 			switch event.Type {
-			case watch.Added:
+			case apiWatch.Added:
 				fallthrough
-			case watch.Modified:
+			case apiWatch.Modified:
 				if updatedMap, ok := event.Object.(*corev1.ConfigMap); ok {
 					if updatedValue, ok := updatedMap.Data[dataField]; ok {
 						if updatedValue != dataValue {
@@ -56,7 +66,7 @@ func checkConfigMapChanges(eventChannel <-chan watch.Event, dataField string, da
 						}
 					}
 				}
-			case watch.Deleted:
+			case apiWatch.Deleted:
 				fallthrough
 			default:
 				// Do nothing
@@ -66,19 +76,6 @@ func checkConfigMapChanges(eventChannel <-chan watch.Event, dataField string, da
 			return
 		}
 	}
-}
-
-func createWatcher(clientset kubernetes.Interface, namespace string, configMapName string, watcher *watch.Interface) error {
-	err := retry.OnError(backoff, retriable, func() error {
-		var innerErr error
-		*watcher, innerErr = clientset.CoreV1().ConfigMaps(namespace).Watch(context.TODO(),
-			metav1.SingleObject(metav1.ObjectMeta{Name: configMapName, Namespace: namespace}))
-		if innerErr != nil {
-			logger.Info("cannot create watcher", "namespace", namespace, "configMap name", configMapName, "error", innerErr)
-		}
-		return innerErr
-	})
-	return err
 }
 
 func retriable(err error) bool {
