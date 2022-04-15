@@ -5,102 +5,101 @@
 package metrics
 
 import (
-	reflect "reflect"
-
 	gomock "github.com/golang/mock/gomock"
+	reflect "reflect"
 )
 
-// MockMetrics is a mock of Metrics interface.
+// MockMetrics is a mock of Metrics interface
 type MockMetrics struct {
 	ctrl     *gomock.Controller
 	recorder *MockMetricsMockRecorder
 }
 
-// MockMetricsMockRecorder is the mock recorder for MockMetrics.
+// MockMetricsMockRecorder is the mock recorder for MockMetrics
 type MockMetricsMockRecorder struct {
 	mock *MockMetrics
 }
 
-// NewMockMetrics creates a new mock instance.
+// NewMockMetrics creates a new mock instance
 func NewMockMetrics(ctrl *gomock.Controller) *MockMetrics {
 	mock := &MockMetrics{ctrl: ctrl}
 	mock.recorder = &MockMetricsMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use.
+// EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockMetrics) EXPECT() *MockMetricsMockRecorder {
 	return m.recorder
 }
 
-// IncEdgeDeviceFailedRegistration mocks base method.
-func (m *MockMetrics) IncEdgeDeviceFailedRegistration() {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "IncEdgeDeviceFailedRegistration")
-}
-
-// IncEdgeDeviceFailedRegistration indicates an expected call of IncEdgeDeviceFailedRegistration.
-func (mr *MockMetricsMockRecorder) IncEdgeDeviceFailedRegistration() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IncEdgeDeviceFailedRegistration", reflect.TypeOf((*MockMetrics)(nil).IncEdgeDeviceFailedRegistration))
-}
-
-// IncEdgeDeviceSuccessfulRegistration mocks base method.
+// IncEdgeDeviceSuccessfulRegistration mocks base method
 func (m *MockMetrics) IncEdgeDeviceSuccessfulRegistration() {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "IncEdgeDeviceSuccessfulRegistration")
 }
 
-// IncEdgeDeviceSuccessfulRegistration indicates an expected call of IncEdgeDeviceSuccessfulRegistration.
+// IncEdgeDeviceSuccessfulRegistration indicates an expected call of IncEdgeDeviceSuccessfulRegistration
 func (mr *MockMetricsMockRecorder) IncEdgeDeviceSuccessfulRegistration() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IncEdgeDeviceSuccessfulRegistration", reflect.TypeOf((*MockMetrics)(nil).IncEdgeDeviceSuccessfulRegistration))
 }
 
-// IncEdgeDeviceUnregistration mocks base method.
+// IncEdgeDeviceFailedRegistration mocks base method
+func (m *MockMetrics) IncEdgeDeviceFailedRegistration() {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "IncEdgeDeviceFailedRegistration")
+}
+
+// IncEdgeDeviceFailedRegistration indicates an expected call of IncEdgeDeviceFailedRegistration
+func (mr *MockMetricsMockRecorder) IncEdgeDeviceFailedRegistration() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IncEdgeDeviceFailedRegistration", reflect.TypeOf((*MockMetrics)(nil).IncEdgeDeviceFailedRegistration))
+}
+
+// IncEdgeDeviceUnregistration mocks base method
 func (m *MockMetrics) IncEdgeDeviceUnregistration() {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "IncEdgeDeviceUnregistration")
 }
 
-// IncEdgeDeviceUnregistration indicates an expected call of IncEdgeDeviceUnregistration.
+// IncEdgeDeviceUnregistration indicates an expected call of IncEdgeDeviceUnregistration
 func (mr *MockMetricsMockRecorder) IncEdgeDeviceUnregistration() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IncEdgeDeviceUnregistration", reflect.TypeOf((*MockMetrics)(nil).IncEdgeDeviceUnregistration))
 }
 
-// RecordEdgeDevicePresence mocks base method.
+// RecordEdgeDevicePresence mocks base method
 func (m *MockMetrics) RecordEdgeDevicePresence(namespace, name string) {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "RecordEdgeDevicePresence", namespace, name)
 }
 
-// RecordEdgeDevicePresence indicates an expected call of RecordEdgeDevicePresence.
+// RecordEdgeDevicePresence indicates an expected call of RecordEdgeDevicePresence
 func (mr *MockMetricsMockRecorder) RecordEdgeDevicePresence(namespace, name interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RecordEdgeDevicePresence", reflect.TypeOf((*MockMetrics)(nil).RecordEdgeDevicePresence), namespace, name)
 }
 
-// RegisterDeviceCounter mocks base method.
-func (m *MockMetrics) RegisterDeviceCounter(namespace, name string) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "RegisterDeviceCounter", namespace, name)
-}
-
-// RegisterDeviceCounter indicates an expected call of RegisterDeviceCounter.
-func (mr *MockMetricsMockRecorder) RegisterDeviceCounter(namespace, name interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RegisterDeviceCounter", reflect.TypeOf((*MockMetrics)(nil).RegisterDeviceCounter), namespace, name)
-}
-
-// RemoveDeviceCounter mocks base method.
+// RemoveDeviceCounter mocks base method
 func (m *MockMetrics) RemoveDeviceCounter(namespace, name string) {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "RemoveDeviceCounter", namespace, name)
 }
 
-// RemoveDeviceCounter indicates an expected call of RemoveDeviceCounter.
+// RemoveDeviceCounter indicates an expected call of RemoveDeviceCounter
 func (mr *MockMetricsMockRecorder) RemoveDeviceCounter(namespace, name interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RemoveDeviceCounter", reflect.TypeOf((*MockMetrics)(nil).RemoveDeviceCounter), namespace, name)
+}
+
+// RegisterDeviceCounter mocks base method
+func (m *MockMetrics) RegisterDeviceCounter(namespace, name string) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "RegisterDeviceCounter", namespace, name)
+}
+
+// RegisterDeviceCounter indicates an expected call of RegisterDeviceCounter
+func (mr *MockMetricsMockRecorder) RegisterDeviceCounter(namespace, name interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RegisterDeviceCounter", reflect.TypeOf((*MockMetrics)(nil).RegisterDeviceCounter), namespace, name)
 }
