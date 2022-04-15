@@ -123,6 +123,10 @@ var Config struct {
 
 	// MaxConcurrentReconciles is the maximum number of concurrent Reconciles which can be run
 	MaxConcurrentReconciles uint `envconfig:"MAX_CONCURRENT_RECONCILES" default:"3"`
+
+	RateLimiterQPS float32 `envconfig:"RATE_LIMITER_QPS" default:"100"`
+
+	RateLimiterBurst int `envconfig:"RATE_LIMITER_BURST" default:"1000"`
 }
 
 func init() {
@@ -172,7 +176,8 @@ func main() {
 		setupLog.Error(err, "Unable to retrieve config")
 		os.Exit(1)
 	}
-	r.RateLimiter = flowcontrol.NewTokenBucketRateLimiter(100, 1000)
+	setupLog.Info("RateLimiterQPS: ", Config.RateLimiterQPS, "RateLimiterBurst: ", Config.RateLimiterBurst)
+	r.RateLimiter = flowcontrol.NewTokenBucketRateLimiter(Config.RateLimiterQPS, Config.RateLimiterBurst)
 	mgr, err := ctrl.NewManager(r, ctrl.Options{
 		Scheme:                 scheme,
 		MetricsBindAddress:     Config.MetricsAddr,
